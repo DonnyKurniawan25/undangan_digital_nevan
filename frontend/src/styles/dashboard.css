@@ -929,3 +929,85 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* QRIS payment UI */
+.qris-pay {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.5rem;
+  margin-top: 1.2rem;
+  align-items: start;
+}
+.qris-box {
+  text-align: center;
+}
+.qris-img {
+  max-width: 280px;
+  width: 100%;
+  border: 1px solid #e2e2e2;
+  border-radius: 14px;
+  padding: 10px;
+  background: #fff;
+}
+.qris-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.pay-instructions p,
+.pay-account p {
+  margin: 0.2rem 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+.pay-steps ol {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+}
+.pay-steps li {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+.wa-confirm {
+  display: inline-block;
+  text-align: center;
+  text-decoration: none;
+  background: #25d366;
+  margin-top: 0.5rem;
+}
+.wa-confirm:hover {
+  background: #1da851;
+}
+.pay-pending-note {
+  margin-top: 1.5rem;
+  padding: 1rem 1.2rem;
+  background: #fff7e6;
+  border: 1px solid #ffe0a3;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: flex-start;
+}
+.pay-pending-note p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #7a5a00;
+}
+.btn-secondary {
+  background: #fff;
+  color: var(--d-text);
+  border: 1px solid var(--d-border);
+  border-radius: 8px;
+  padding: 0.6rem 1.1rem;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.btn-secondary:hover {
+  background: #f5f5f5;
+}
+@media (max-width: 640px) {
+  .qris-pay {
+    grid-template-columns: 1fr;
+  }
+}

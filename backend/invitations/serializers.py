@@ -12,6 +12,7 @@ from .models import (
     Wish,
     Photo,
     AudioTrack,
+    PaymentSetting,
     PricingTier,
     Order,
 )
@@ -320,6 +321,22 @@ class PricingTierSerializer(serializers.ModelSerializer):
     class Meta:
         model = PricingTier
         fields = ["id", "link_count", "price", "label", "description", "is_active"]
+
+
+class PaymentSettingSerializer(serializers.ModelSerializer):
+    qris_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PaymentSetting
+        fields = ["qris_url", "whatsapp_number", "account_info", "instructions"]
+
+    def get_qris_url(self, obj):
+        if not obj.qris_image:
+            return ""
+        request = self.context.get("request")
+        if request:
+            return request.build_absolute_uri(obj.qris_image.url)
+        return obj.qris_image.url
 
 
 class OrderInvitationSerializer(serializers.ModelSerializer):

@@ -335,6 +335,53 @@ def delete_old_audio_on_change(sender, instance, **kwargs):
         old_file.delete(save=False)
 
 
+class PaymentSetting(models.Model):
+    """Singleton: pengaturan pembayaran manual (QRIS + konfirmasi WhatsApp).
+    Dikelola oleh superadmin di panel admin."""
+
+    qris_image = models.ImageField(
+        upload_to="payment/",
+        blank=True,
+        help_text="Upload gambar QRIS. Akan ditampilkan ke pembeli saat pembayaran.",
+    )
+    whatsapp_number = models.CharField(
+        max_length=30,
+        blank=True,
+        help_text="Nomor WhatsApp untuk konfirmasi (format 62..., contoh: 6281917190895)",
+    )
+    account_info = models.TextField(
+        blank=True,
+        help_text="Info rekening/transfer alternatif (opsional).",
+    )
+    instructions = models.TextField(
+        blank=True,
+        default=(
+            "Scan QRIS di atas untuk membayar, lalu konfirmasi pembayaran dan "
+            "kirim bukti transfer ke WhatsApp kami. Akun Anda akan diaktifkan "
+            "setelah pembayaran diverifikasi."
+        ),
+        help_text="Instruksi pembayaran yang ditampilkan ke pembeli.",
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Pengaturan Pembayaran"
+        verbose_name_plural = "Pengaturan Pembayaran"
+
+    def __str__(self):
+        return "Pengaturan Pembayaran (QRIS & WhatsApp)"
+
+    def save(self, *args, **kwargs):
+        # Enforce a single row.
+        self.pk = 1
+        super().save(*args, **kwargs)
+
+    @classmethod
+    def load(cls):
+        obj, _ = cls.objects.get_or_create(pk=1)
+        return obj
+
+
 class PricingTier(models.Model):
     """Harga publikasi berdasarkan jumlah link/undangan. Dikelola superadmin."""
 

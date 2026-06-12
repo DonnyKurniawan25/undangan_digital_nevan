@@ -11,6 +11,7 @@ from .views import (
     WishCreateView,
     templates_list,
     pricing_list,
+    payment_info,
     register,
     login,
     me,
@@ -26,6 +27,7 @@ router.register(r"my/orders", OrderViewSet, basename="my-order")
 urlpatterns = [
     path("templates/", templates_list, name="templates-list"),
     path("pricing/", pricing_list, name="pricing-list"),
+    path("payment-info/", payment_info, name="payment-info"),
     path("auth/register/", register, name="auth-register"),
     path("auth/login/", login, name="auth-login"),
     path("auth/me/", me, name="auth-me"),

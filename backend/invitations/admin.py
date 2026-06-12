@@ -17,6 +17,7 @@ from .models import (
     Wish,
     Photo,
     AudioTrack,
+    PaymentSetting,
     PricingTier,
     Order,
 )
@@ -359,6 +360,47 @@ class RSVPAdmin(admin.ModelAdmin):
 class WishAdmin(admin.ModelAdmin):
     list_display = ("name", "invitation", "created_at")
     search_fields = ("name", "message")
+
+
+@admin.register(PaymentSetting)
+class PaymentSettingAdmin(admin.ModelAdmin):
+    readonly_fields = ("qris_preview", "updated_at")
+    fields = (
+        "qris_image",
+        "qris_preview",
+        "whatsapp_number",
+        "account_info",
+        "instructions",
+        "updated_at",
+    )
+
+    def has_add_permission(self, request):
+        # Singleton — only one row, edit the existing one.
+        return not PaymentSetting.objects.exists()
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
+    def changelist_view(self, request, extra_context=None):
+        # Redirect straight to the single settings object for convenience.
+        obj = PaymentSetting.load()
+        from django.urls import reverse
+
+        return redirect(
+            reverse("admin:invitations_paymentsetting_change", args=[obj.pk])
+        )
+
+    @admin.display(description="Pratinjau QRIS")
+    def qris_preview(self, obj):
+        if not obj.qris_image:
+            return "Belum ada QRIS. Unggah gambar lalu simpan."
+        base = getattr(settings, "BACKEND_BASE_URL", "").rstrip("/")
+        return format_html(
+            "<img src='{0}{1}' style='max-width:320px;border:1px solid #ddd;"
+            "border-radius:12px;padding:8px;background:#fff'>",
+            base,
+            obj.qris_image.url,
+        )
 
 
 @admin.register(PricingTier)

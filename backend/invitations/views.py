@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
-from .models import Invitation, RSVP, Wish, Photo, AudioTrack, PricingTier, Order
+from .models import Invitation, RSVP, Wish, Photo, AudioTrack, PaymentSetting, PricingTier, Order
 from .serializers import (
     InvitationListSerializer,
     InvitationDetailSerializer,
@@ -19,6 +19,7 @@ from .serializers import (
     UserSerializer,
     PhotoSerializer,
     AudioTrackSerializer,
+    PaymentSettingSerializer,
     PricingTierSerializer,
     OrderSerializer,
 )
@@ -103,6 +104,15 @@ def templates_list(request):
 def pricing_list(request):
     tiers = PricingTier.objects.filter(is_active=True)
     return Response(PricingTierSerializer(tiers, many=True).data)
+
+
+@api_view(["GET"])
+@permission_classes([AllowAny])
+def payment_info(request):
+    setting = PaymentSetting.load()
+    return Response(
+        PaymentSettingSerializer(setting, context={"request": request}).data
+    )
 
 
 # ============================================================

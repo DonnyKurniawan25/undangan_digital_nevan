@@ -68,6 +68,7 @@ export const api = {
   // public
   getTemplates: () => request("/templates/"),
   getPricing: () => request("/pricing/"),
+  getPaymentInfo: () => request("/payment-info/"),
   listInvitations: () => request("/invitations/"),
   getInvitation: (slug) => request(`/invitations/${slug}/`),
   getWishes: (slug) => request(`/invitations/${slug}/wishes/`),

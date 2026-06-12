@@ -3,25 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { api } from "../../api/client.js";
 import DashboardLayout from "../../components/DashboardLayout.jsx";
 
-const rupiah = (n) =>
-  "Rp" + Number(n || 0).toLocaleString("id-ID");
+const rupiah = (n) => "Rp" + Number(n || 0).toLocaleString("id-ID");
 
 export default function PublishPage() {
   const navigate = useNavigate();
   const [tiers, setTiers] = useState([]);
   const [invitations, setInvitations] = useState([]);
+  const [payment, setPayment] = useState(null);
   const [selected, setSelected] = useState([]);
   const [loading, setLoading] = useState(true);
   const [processing, setProcessing] = useState(false);
-  const [step, setStep] = useState("select"); // select | pay | done
+  const [step, setStep] = useState("select"); // select | pay
   const [order, setOrder] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    Promise.all([api.getPricing(), api.myInvitations()])
-      .then(([t, inv]) => {
+    Promise.all([api.getPricing(), api.myInvitations(), api.getPaymentInfo()])
+      .then(([t, inv, pay]) => {
         setTiers(t);
         setInvitations(inv);
+        setPayment(pay);
       })
       .finally(() => setLoading(false));
   }, []);
@@ -60,19 +61,21 @@ export default function PublishPage() {
     }
   };
 
-  const pay = async (method) => {
-    setProcessing(true);
-    setError("");
-    try {
-      const paid = await api.payOrder(order.id, method);
-      setOrder(paid);
-      setStep("done");
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setProcessing(false);
-    }
-  };
+  // Build a WhatsApp confirmation link with a prefilled message.
+  const waLink = useMemo(() => {
+    if (!payment?.whatsapp_number || !order) return "";
+    const names = order.invitations_detail
+      .map((i) => `${i.groom_name} & ${i.bride_name}`)
+      .join(", ");
+    const msg =
+      `Halo, saya sudah melakukan pembayaran untuk publikasi undangan.\n\n` +
+      `Order ID: #${order.id}\n` +
+      `Jumlah link: ${order.link_count}\n` +
+      `Total: ${rupiah(order.amount)}\n` +
+      `Undangan: ${names}\n\n` +
+      `Berikut saya lampirkan bukti pembayarannya.`;
+    return `https://wa.me/${payment.whatsapp_number}?text=${encodeURIComponent(msg)}`;
+  }, [payment, order]);
 
   if (loading)
     return <DashboardLayout><p className="dash-muted">Memuat...</p></DashboardLayout>;
@@ -145,44 +148,79 @@ export default function PublishPage() {
 
       {step === "pay" && order && (
         <div className="publish-box">
-          <h2>Pembayaran</h2>
+          <h2>Pembayaran via QRIS</h2>
           <div className="pay-summary">
             <div><span>Jumlah Link</span><strong>{order.link_count}</strong></div>
             <div><span>Total</span><strong>{rupiah(order.amount)}</strong></div>
             <div><span>Order ID</span><strong>#{order.id}</strong></div>
           </div>
-          <p className="dash-muted">
-            Pilih metode pembayaran (simulasi gateway untuk demo).
-          </p>
-          <div className="pay-methods">
-            {["Transfer Bank", "QRIS", "E-Wallet"].map((m) => (
-              <button key={m} className="pay-method" disabled={processing} onClick={() => pay(m)}>
-                {m}
-              </button>
-            ))}
+
+          <div className="qris-pay">
+            {payment?.qris_url ? (
+              <div className="qris-box">
+                <img className="qris-img" src={payment.qris_url} alt="QRIS Pembayaran" />
+                <p className="dash-muted">Scan QRIS di atas untuk membayar</p>
+              </div>
+            ) : (
+              <p className="form-msg error">
+                QRIS belum diatur admin. Silakan hubungi penjual untuk pembayaran.
+              </p>
+            )}
+
+            <div className="qris-info">
+              {payment?.instructions && (
+                <div className="pay-instructions">
+                  {payment.instructions.split("\n").map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+                </div>
+              )}
+              {payment?.account_info && (
+                <div className="pay-account">
+                  <strong>Info Pembayaran Lain:</strong>
+                  {payment.account_info.split("\n").map((line, i) => (
+                    <p key={i}>{line}</p>
+                  ))}
+                </div>
+              )}
+
+              <div className="pay-steps">
+                <p><strong>Langkah pembayaran:</strong></p>
+                <ol>
+                  <li>Scan QRIS & bayar sesuai total {rupiah(order.amount)}</li>
+                  <li>Simpan bukti pembayaran (screenshot)</li>
+                  <li>Klik tombol di bawah → konfirmasi & kirim bukti via WhatsApp</li>
+                  <li>Akun Anda diaktifkan setelah pembayaran diverifikasi</li>
+                </ol>
+              </div>
+
+              {waLink ? (
+                <a
+                  className="btn-primary wa-confirm"
+                  href={waLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Konfirmasi & Kirim Bukti via WhatsApp
+                </a>
+              ) : (
+                <p className="form-msg error">
+                  Nomor WhatsApp konfirmasi belum diatur admin.
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="pay-pending-note">
+            <p>
+              Pesanan <strong>#{order.id}</strong> berstatus <em>Menunggu Pembayaran</em>.
+              Undangan akan otomatis aktif setelah pembayaran Anda diverifikasi penjual.
+            </p>
+            <button className="btn-secondary" onClick={() => navigate("/dashboard/orders")}>
+              Lihat Status Pesanan
+            </button>
           </div>
           {error && <p className="form-msg error">{error}</p>}
-        </div>
-      )}
-
-      {step === "done" && order && (
-        <div className="publish-box success-box">
-          <div className="success-icon">✓</div>
-          <h2>Pembayaran Berhasil!</h2>
-          <p>{order.link_count} undangan Anda telah dipublikasikan. Link siap dibagikan.</p>
-          <div className="done-links">
-            {order.invitations_detail.map((inv) => (
-              <div className="done-link-row" key={inv.id}>
-                <span>{inv.groom_name} &amp; {inv.bride_name}</span>
-                <a href={`/undangan/${inv.slug}`} target="_blank" rel="noreferrer">
-                  Buka Link →
-                </a>
-              </div>
-            ))}
-          </div>
-          <button className="btn-primary" onClick={() => navigate("/dashboard")}>
-            Kembali ke Dashboard
-          </button>
         </div>
       )}
     </DashboardLayout>
