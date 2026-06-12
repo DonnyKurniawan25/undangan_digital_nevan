@@ -394,6 +394,21 @@
   margin: 0.4rem 0 1.2rem;
   line-height: 1.5;
 }
+.lx-map-embed {
+  margin: 1rem auto 0.8rem;
+  max-width: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+}
+.lx-map-embed iframe {
+  width: 100%;
+  height: 170px;
+  border: 0;
+  display: block;
+  filter: grayscale(0.3) contrast(1.05);
+}
+
 .lx-maps-btn {
   display: inline-block;
   border: 1px solid var(--accent);

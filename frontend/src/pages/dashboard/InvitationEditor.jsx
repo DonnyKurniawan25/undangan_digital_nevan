@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { api } from "../../api/client.js";
 import DashboardLayout from "../../components/DashboardLayout.jsx";
 import PhotoPicker from "../../components/PhotoPicker.jsx";
+import AudioPicker from "../../components/AudioPicker.jsx";
 
 const EMPTY = {
   template: "elegant",
@@ -74,6 +75,7 @@ function PhotoField({ label, value, onChange }) {
 function MusicField({ value, onChange }) {
   const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState("");
+  const [picker, setPicker] = useState(false);
   const inputRef = useRef(null);
 
   const handleFile = async (file) => {
@@ -111,6 +113,13 @@ function MusicField({ value, onChange }) {
         >
           {uploading ? "Mengunggah..." : "Unggah MP3"}
         </button>
+        <button
+          type="button"
+          className="pick-btn"
+          onClick={() => setPicker(true)}
+        >
+          Galeri Musik
+        </button>
         <input
           ref={inputRef}
           type="file"
@@ -123,6 +132,7 @@ function MusicField({ value, onChange }) {
       {value ? (
         <audio controls src={value} style={{ width: "100%", marginTop: "0.5rem" }} />
       ) : null}
+      <AudioPicker open={picker} onClose={() => setPicker(false)} onSelect={onChange} />
     </label>
   );
 }

@@ -6,7 +6,7 @@ import WeddingInfo from "../components/WeddingInfo.jsx";
 import RsvpForm from "../components/RsvpForm.jsx";
 import Guestbook from "../components/Guestbook.jsx";
 import { useScrollReveal } from "../hooks/useScrollReveal.js";
-import { formatDate, formatFullDate, timeRange } from "../utils/format.js";
+import { formatDate, formatFullDate, timeRange, mapEmbedUrl } from "../utils/format.js";
 
 function SectionTitle({ label, title }) {
   return (
@@ -194,6 +194,16 @@ export default function ModernTemplate({
                     <strong>{ev.venue_name}</strong>
                   </div>
                   <p className="md-event-address">{ev.venue_address}</p>
+                  {mapEmbedUrl(ev) && (
+                    <div className="md-map-embed">
+                      <iframe
+                        title={`Peta ${ev.name}`}
+                        src={mapEmbedUrl(ev)}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </div>
+                  )}
                   {ev.maps_url && (
                     <a
                       className="md-maps-btn"

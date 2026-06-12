@@ -643,6 +643,39 @@
   cursor: pointer;
   padding: 0;
 }
+.audio-picker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.audio-picker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid #e2e2e2;
+  border-radius: 10px;
+  background: #fafafa;
+}
+.audio-picker-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+  min-width: 0;
+}
+.audio-picker-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.audio-picker-info audio {
+  width: 100%;
+  height: 34px;
+}
 .picker-item:hover {
   border-color: var(--d-accent);
 }

@@ -442,6 +442,20 @@
   line-height: 1.5;
 }
 
+.el-map-embed {
+  margin: 1rem auto 0.8rem;
+  max-width: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+.el-map-embed iframe {
+  width: 100%;
+  height: 170px;
+  border: 0;
+  display: block;
+}
+
 .el-maps-btn {
   display: inline-block;
   border: 1px solid var(--accent);

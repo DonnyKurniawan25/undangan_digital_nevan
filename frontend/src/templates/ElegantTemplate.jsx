@@ -6,7 +6,7 @@ import WeddingInfo from "../components/WeddingInfo.jsx";
 import RsvpForm from "../components/RsvpForm.jsx";
 import Guestbook from "../components/Guestbook.jsx";
 import { useScrollReveal } from "../hooks/useScrollReveal.js";
-import { formatDate, formatFullDate, timeRange } from "../utils/format.js";
+import { formatDate, formatFullDate, timeRange, mapEmbedUrl } from "../utils/format.js";
 
 function SectionTitle({ sub, title }) {
   return (
@@ -192,6 +192,16 @@ export default function ElegantTemplate({
                   <div className="el-event-line">{timeRange(ev.time_start, ev.time_end)}</div>
                   <div className="el-event-venue">{ev.venue_name}</div>
                   <div className="el-event-address">{ev.venue_address}</div>
+                  {mapEmbedUrl(ev) && (
+                    <div className="el-map-embed">
+                      <iframe
+                        title={`Peta ${ev.name}`}
+                        src={mapEmbedUrl(ev)}
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </div>
+                  )}
                   {ev.maps_url && (
                     <a
                       className="el-maps-btn"
