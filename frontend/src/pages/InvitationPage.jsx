@@ -5,12 +5,16 @@ import ElegantTemplate from "../templates/ElegantTemplate.jsx";
 import FloralTemplate from "../templates/FloralTemplate.jsx";
 import LuxuryTemplate from "../templates/LuxuryTemplate.jsx";
 import ModernTemplate from "../templates/ModernTemplate.jsx";
+import AuroraTemplate from "../templates/AuroraTemplate.jsx";
+import RoyalTemplate from "../templates/RoyalTemplate.jsx";
 
 const TEMPLATES = {
   elegant: ElegantTemplate,
   floral: FloralTemplate,
   luxury: LuxuryTemplate,
   modern: ModernTemplate,
+  aurora: AuroraTemplate,
+  royal: RoyalTemplate,
 };
 
 export default function InvitationPage() {

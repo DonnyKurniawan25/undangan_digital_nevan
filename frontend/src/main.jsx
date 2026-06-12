@@ -9,6 +9,8 @@ import "./styles/elegant.css";
 import "./styles/floral.css";
 import "./styles/luxury.css";
 import "./styles/modern.css";
+import "./styles/aurora.css";
+import "./styles/royal.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

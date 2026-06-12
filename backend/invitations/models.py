@@ -16,6 +16,8 @@ class Invitation(models.Model):
         ("floral", "Floral Botanical"),
         ("luxury", "Luxury Dark Gold"),
         ("modern", "Modern Minimalist"),
+        ("aurora", "Aurora Glass"),
+        ("royal", "Royal Vintage"),
     ]
 
     slug = models.SlugField(max_length=120, unique=True, blank=True)

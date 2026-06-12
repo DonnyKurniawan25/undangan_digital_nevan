@@ -8,6 +8,7 @@ const TEMPLATE_LABELS = {
   floral: "Floral Botanical",
   luxury: "Luxury Dark Gold",
   modern: "Modern Minimalist",
+  aurora: "Aurora Glass",
 };
 
 export default function Home() {
