@@ -95,9 +95,11 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.JSONRenderer",
         "rest_framework.renderers.BrowsableAPIRenderer",
     ],
+    # Token-only auth for the SPA. SessionAuthentication is intentionally
+    # omitted: it enforces CSRF on POST whenever a Django admin session cookie
+    # is present in the same browser, which broke /api/auth/login/.
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [
         "rest_framework.permissions.AllowAny",
@@ -108,3 +110,9 @@ REST_FRAMEWORK = {
 # CORS - allow the React dev server during development
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+# Production overrides (gitignored). Exec keeps the module namespace shared so
+# overrides can reference MIDDLEWARE/INSTALLED_APPS defined above.
+_local_settings = BASE_DIR / "local_settings.py"
+if _local_settings.exists():
+    exec(compile(_local_settings.read_text(), str(_local_settings), "exec"))
