@@ -162,6 +162,9 @@ di-proxy ke Django (lihat `vite.config.js`), jadi pastikan backend juga aktif.
 ## Mengelola Lewat Django Admin
 
 Buka `http://127.0.0.1:8000/admin/` (user: `admin`, pass: `admin123`).
+Panel admin sudah memakai tema kustom: header berbranding emas, section
+berbentuk kartu, dan **field input yang jelas terlihat** (border tegas, padding
+lega, highlight emas saat fokus). Mendukung mode terang & gelap bawaan Django.
 
 ### Menyalin link undangan
 Pada halaman edit **Invitation**, di bagian paling atas (**Link Undangan**)
@@ -192,6 +195,22 @@ foto mempelai, galeri, dll). Di daftar foto juga ada tombol **Salin** cepat.
 Isi field **Music URL** pada undangan dengan tautan file audio (mp3). Musik
 mulai otomatis saat tamu menekan tombol **Buka Undangan**, dan ada tombol
 musik mengambang untuk play/pause. Data contoh sudah memakai musik bawaan.
+
+### Edit undangan di admin (section, preview, on/off)
+Halaman edit **Invitation** kini terbagi jelas per section bertanda:
+`🔗 LINK & PREVIEW`, `⚙️ PENGATURAN UMUM`, `👁️ TAMPILAN SECTION`,
+`🤵 MEMPELAI PRIA`, `👰 MEMPELAI WANITA`, `📝 KONTEN UTAMA`, dan
+`✨ INFO TAMBAHAN`.
+
+- **Pratinjau langsung**: di bagian atas ada iframe berbentuk ponsel yang
+  menampilkan undangan secara live — **bisa dilihat walau belum dipublikasikan**
+  (memakai preview token rahasia). Klik **Save** lalu **Muat Ulang** untuk
+  melihat perubahan terbaru, atau **Buka di Tab Baru**.
+- **Aktif/nonaktif section**: di grup `👁️ TAMPILAN SECTION` ada centang untuk
+  tiap bagian (Quote, Mempelai, Hitung Mundur, Love Story, Acara, Galeri,
+  Wedding Gift, Info Tambahan, RSVP, Buku Tamu). Hilangkan centang untuk
+  menyembunyikan section dari undangan. Toggle yang sama juga tersedia di editor
+  dashboard pengguna.
 
 ### Kelola harga & pesanan (superadmin)
 - **Paket Harga**: atur harga per jumlah link (1 link, 2 link, dst). Pengguna

@@ -46,6 +46,8 @@ export default function FloralTemplate({
     window.scrollTo({ top: 0 });
   };
 
+  const show = (key) => data[key] !== false;
+
   return (
     <div className="tpl-floral">
       <AudioPlayer src={data.music_url} playing={music} onToggle={setMusic} />
@@ -86,7 +88,7 @@ export default function FloralTemplate({
             <div className="fl-opening-inner reveal">
               <Leaf />
               <p className="fl-opening-text">{data.opening_text}</p>
-              {data.quote && (
+              {show("show_quote") && data.quote && (
                 <blockquote className="fl-quote">
                   “{data.quote}”
                   {data.quote_source && <cite>— {data.quote_source}</cite>}
@@ -96,6 +98,7 @@ export default function FloralTemplate({
           </section>
 
           {/* COUPLE */}
+          {show("show_couple") && (
           <section className="fl-section fl-couple">
             <SectionTitle title="The Couple" />
             <div className="fl-person reveal">
@@ -144,17 +147,20 @@ export default function FloralTemplate({
               )}
             </div>
           </section>
+          )}
 
           {/* COUNTDOWN */}
+          {show("show_countdown") && (
           <section className="fl-section fl-countdown-sec">
             <div className="fl-countdown-inner reveal">
               <p className="fl-count-date">{formatFullDate(data.main_date)}</p>
               <Countdown target={data.main_date} />
             </div>
           </section>
+          )}
 
           {/* LOVE STORY */}
-          {data.love_story && data.love_story.length > 0 && (
+          {show("show_love_story") && data.love_story && data.love_story.length > 0 && (
             <section className="fl-section fl-story">
               <SectionTitle title="Our Story" />
               <div className="fl-story-list">
@@ -170,6 +176,7 @@ export default function FloralTemplate({
           )}
 
           {/* EVENTS */}
+          {show("show_events") && (
           <section className="fl-section fl-events">
             <SectionTitle title="Save The Date" />
             <div className="fl-events-grid">
@@ -194,9 +201,10 @@ export default function FloralTemplate({
               ))}
             </div>
           </section>
+          )}
 
           {/* GALLERY */}
-          {data.gallery && data.gallery.length > 0 && (
+          {show("show_gallery") && data.gallery && data.gallery.length > 0 && (
             <section className="fl-section fl-gallery">
               <SectionTitle title="Gallery" />
               <div className="fl-gallery-grid reveal">
@@ -210,8 +218,9 @@ export default function FloralTemplate({
           )}
 
           {/* GIFT */}
-          {((data.bank_accounts && data.bank_accounts.length > 0) ||
-            data.gift_address) && (
+          {show("show_gift") &&
+            ((data.bank_accounts && data.bank_accounts.length > 0) ||
+              data.gift_address) && (
             <section className="fl-section fl-gift">
               <SectionTitle title="Wedding Gift" />
               <p className="fl-gift-text reveal">
@@ -228,7 +237,8 @@ export default function FloralTemplate({
           )}
 
           {/* EXTRA INFO */}
-          {(data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
+          {show("show_info") &&
+            (data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
             <section className="fl-section fl-info">
               <SectionTitle title="Informasi" />
               <div className="reveal">
@@ -238,6 +248,7 @@ export default function FloralTemplate({
           )}
 
           {/* RSVP */}
+          {show("show_rsvp") && (
           <section className="fl-section fl-rsvp">
             <SectionTitle title="RSVP" />
             <div className="reveal">
@@ -248,14 +259,17 @@ export default function FloralTemplate({
               />
             </div>
           </section>
+          )}
 
           {/* GUESTBOOK */}
+          {show("show_guestbook") && (
           <section className="fl-section fl-guestbook">
             <SectionTitle title="Wishes" />
             <div className="reveal">
               <Guestbook slug={data.slug} wishes={wishes} onAdded={onWishAdded} />
             </div>
           </section>
+          )}
 
           {/* CLOSING */}
           <section className="fl-closing">

@@ -45,6 +45,8 @@ export default function ElegantTemplate({
     window.scrollTo({ top: 0 });
   };
 
+  const show = (key) => data[key] !== false;
+
   return (
     <div className="tpl-elegant">
       <AudioPlayer src={data.music_url} playing={music} onToggle={setMusic} />
@@ -79,7 +81,7 @@ export default function ElegantTemplate({
             <div className="el-opening-inner reveal">
               <p className="el-bismillah">بِسْمِ اللهِ الرَّحْمنِ الرَّحِيْمِ</p>
               <p className="el-opening-text">{data.opening_text}</p>
-              {data.quote && (
+              {show("show_quote") && data.quote && (
                 <blockquote className="el-quote">
                   “{data.quote}”
                   {data.quote_source && <cite>— {data.quote_source}</cite>}
@@ -89,6 +91,7 @@ export default function ElegantTemplate({
           </section>
 
           {/* COUPLE */}
+          {show("show_couple") && (
           <section className="el-section el-couple">
             <SectionTitle sub="Kami Yang Berbahagia" title="Mempelai" />
             <div className="el-couple-grid">
@@ -139,8 +142,10 @@ export default function ElegantTemplate({
               </div>
             </div>
           </section>
+          )}
 
           {/* COUNTDOWN */}
+          {show("show_countdown") && (
           <section
             className="el-section el-countdown-sec"
             style={{ backgroundImage: `url(${data.cover_photo})` }}
@@ -152,9 +157,10 @@ export default function ElegantTemplate({
               <Countdown target={data.main_date} />
             </div>
           </section>
+          )}
 
           {/* LOVE STORY */}
-          {data.love_story && data.love_story.length > 0 && (
+          {show("show_love_story") && data.love_story && data.love_story.length > 0 && (
             <section className="el-section el-story">
               <SectionTitle sub="Perjalanan Cinta" title="Our Love Story" />
               <div className="el-timeline">
@@ -173,6 +179,7 @@ export default function ElegantTemplate({
           )}
 
           {/* EVENTS */}
+          {show("show_events") && (
           <section className="el-section el-events">
             <SectionTitle sub="Save The Date" title="Waktu & Tempat" />
             <div className="el-events-grid">
@@ -199,9 +206,10 @@ export default function ElegantTemplate({
               ))}
             </div>
           </section>
+          )}
 
           {/* GALLERY */}
-          {data.gallery && data.gallery.length > 0 && (
+          {show("show_gallery") && data.gallery && data.gallery.length > 0 && (
             <section className="el-section el-gallery">
               <SectionTitle sub="Momen Bahagia" title="Galeri" />
               <div className="el-gallery-grid reveal">
@@ -215,8 +223,9 @@ export default function ElegantTemplate({
           )}
 
           {/* GIFT */}
-          {((data.bank_accounts && data.bank_accounts.length > 0) ||
-            data.gift_address) && (
+          {show("show_gift") &&
+            ((data.bank_accounts && data.bank_accounts.length > 0) ||
+              data.gift_address) && (
             <section className="el-section el-gift">
               <SectionTitle sub="Tanda Kasih" title="Wedding Gift" />
               <p className="el-gift-text reveal">
@@ -234,7 +243,8 @@ export default function ElegantTemplate({
           )}
 
           {/* EXTRA INFO */}
-          {(data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
+          {show("show_info") &&
+            (data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
             <section className="el-section el-info">
               <SectionTitle sub="Informasi" title="Hal Penting" />
               <div className="reveal">
@@ -244,6 +254,7 @@ export default function ElegantTemplate({
           )}
 
           {/* RSVP */}
+          {show("show_rsvp") && (
           <section className="el-section el-rsvp">
             <SectionTitle sub="Konfirmasi Kehadiran" title="RSVP" />
             <div className="reveal">
@@ -254,14 +265,17 @@ export default function ElegantTemplate({
               />
             </div>
           </section>
+          )}
 
           {/* GUESTBOOK */}
+          {show("show_guestbook") && (
           <section className="el-section el-guestbook">
             <SectionTitle sub="Ucapan & Doa" title="Buku Tamu" />
             <div className="reveal">
               <Guestbook slug={data.slug} wishes={wishes} onAdded={onWishAdded} />
             </div>
           </section>
+          )}
 
           {/* CLOSING */}
           <section

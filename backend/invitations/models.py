@@ -3,6 +3,7 @@ from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+import uuid
 
 
 class Invitation(models.Model):
@@ -86,6 +87,21 @@ class Invitation(models.Model):
         blank=True,
         default="Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan memberikan doa restu.",
     )
+
+    # Section visibility toggles — matikan untuk menyembunyikan section di undangan.
+    show_quote = models.BooleanField("Tampilkan Quote/Ayat", default=True)
+    show_couple = models.BooleanField("Tampilkan Mempelai", default=True)
+    show_countdown = models.BooleanField("Tampilkan Hitung Mundur", default=True)
+    show_love_story = models.BooleanField("Tampilkan Love Story", default=True)
+    show_events = models.BooleanField("Tampilkan Acara", default=True)
+    show_gallery = models.BooleanField("Tampilkan Galeri", default=True)
+    show_gift = models.BooleanField("Tampilkan Wedding Gift", default=True)
+    show_info = models.BooleanField("Tampilkan Info Tambahan", default=True)
+    show_rsvp = models.BooleanField("Tampilkan RSVP", default=True)
+    show_guestbook = models.BooleanField("Tampilkan Buku Tamu", default=True)
+
+    # Secret token to allow admin/owner preview before publishing.
+    preview_token = models.UUIDField(default=uuid.uuid4, editable=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

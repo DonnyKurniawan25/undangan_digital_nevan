@@ -32,6 +32,16 @@ const EMPTY = {
   live_stream_url: "",
   gift_address: "",
   closing_text: "",
+  show_quote: true,
+  show_couple: true,
+  show_countdown: true,
+  show_love_story: true,
+  show_events: true,
+  show_gallery: true,
+  show_gift: true,
+  show_info: true,
+  show_rsvp: true,
+  show_guestbook: true,
   events: [],
   gallery: [],
   love_story: [],
@@ -150,6 +160,36 @@ export default function InvitationEditor() {
             <span>Musik (URL mp3)</span>
             <input value={form.music_url} onChange={setInput("music_url")} placeholder="https://...mp3" />
           </label>
+        </section>
+
+        <section className="editor-section">
+          <h2>Tampilan Section</h2>
+          <p className="dash-muted" style={{ marginBottom: "0.8rem" }}>
+            Matikan untuk menyembunyikan section dari undangan.
+          </p>
+          <div className="toggle-grid">
+            {[
+              ["show_quote", "Quote / Ayat"],
+              ["show_couple", "Mempelai"],
+              ["show_countdown", "Hitung Mundur"],
+              ["show_love_story", "Love Story"],
+              ["show_events", "Acara"],
+              ["show_gallery", "Galeri"],
+              ["show_gift", "Wedding Gift"],
+              ["show_info", "Info Tambahan"],
+              ["show_rsvp", "RSVP"],
+              ["show_guestbook", "Buku Tamu"],
+            ].map(([key, label]) => (
+              <label className="toggle-item" key={key}>
+                <input
+                  type="checkbox"
+                  checked={form[key] !== false}
+                  onChange={(e) => set(key)(e.target.checked)}
+                />
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
         </section>
 
         <section className="editor-section">

@@ -1,0 +1,315 @@
+/* ============================================================
+   CUSTOM ADMIN THEME — Undangan Digital
+   Uses Django admin CSS variables so it adapts to light/dark.
+   ============================================================ */
+
+:root {
+  --primary: #a07d3e;
+  --secondary: #a07d3e;
+  --accent: #c9a063;
+  --link-fg: #a07d3e;
+  --link-hover-color: #856533;
+  --button-bg: #a07d3e;
+  --button-hover-bg: #856533;
+  --default-button-bg: #a07d3e;
+  --default-button-hover-bg: #856533;
+}
+
+html, body {
+  font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+}
+
+/* ---------- HEADER / BRANDING ---------- */
+#header {
+  background: linear-gradient(110deg, #2a241a 0%, #5a4a2e 60%, #a07d3e 140%);
+  color: #f3e9d3;
+  padding: 14px 40px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+}
+#header a:link,
+#header a:visited {
+  color: #fff;
+}
+#site-name a {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+#user-tools {
+  font-size: 12px;
+}
+
+div.breadcrumbs {
+  background: #6a5631;
+  color: #f0e2c4;
+  padding: 11px 40px;
+  font-size: 13px;
+}
+div.breadcrumbs a {
+  color: #fbe9c4;
+}
+div.breadcrumbs a:hover {
+  color: #fff;
+}
+
+/* ---------- MODULES / SECTION CARDS ---------- */
+.module {
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+  border: 1px solid var(--hairline-color);
+  overflow: hidden;
+  margin-bottom: 22px;
+  background: var(--module-bg, #fff);
+}
+
+.module > h2,
+.module caption,
+.inline-group h2,
+fieldset.module > h2 {
+  background: linear-gradient(100deg, #a07d3e, #c9a063);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 13px 18px;
+}
+
+/* collapsible fieldset header */
+fieldset.collapse > h2 {
+  background: linear-gradient(100deg, #6a5631, #8a6f3e);
+}
+
+/* ---------- FORM ROWS & LABELS ---------- */
+.aligned label {
+  font-weight: 600;
+  color: var(--body-quiet-color);
+  font-size: 12.5px;
+  padding-top: 8px;
+}
+
+form .aligned p.help,
+form .aligned div.help {
+  font-size: 11.5px;
+  color: var(--body-quiet-color);
+  opacity: 0.85;
+  padding-left: 0;
+}
+
+.form-row {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--hairline-color);
+}
+
+/* ---------- INPUTS — the important bit (visibility) ---------- */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="tel"],
+input[type="date"],
+input[type="time"],
+input[type="datetime-local"],
+textarea,
+select,
+.vTextField {
+  border: 1.5px solid #c4ccd6 !important;
+  border-radius: 9px !important;
+  padding: 10px 13px !important;
+  font-size: 14px !important;
+  background-color: #fdfdfd !important;
+  color: #2b2b2b !important;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  min-height: 20px;
+}
+
+textarea {
+  line-height: 1.55;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+textarea:focus,
+select:focus,
+.vTextField:focus {
+  border-color: #c9a063 !important;
+  background-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(201, 160, 99, 0.2) !important;
+  outline: none !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #aab1bb;
+}
+
+/* widen the common text inputs so they are clearly visible */
+.vTextField,
+input[type="text"],
+input[type="url"],
+input[type="email"] {
+  width: 30em;
+  max-width: 100%;
+}
+textarea.vLargeTextField,
+textarea {
+  width: 42em;
+  max-width: 100%;
+}
+
+/* checkboxes (section toggles) bigger & clearer */
+input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #a07d3e;
+  vertical-align: middle;
+}
+
+.checkbox-row label,
+.form-row.checkbox-row {
+  font-size: 13px;
+}
+
+/* ---------- BUTTONS ---------- */
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input,
+a.button {
+  border-radius: 8px !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  padding: 9px 18px;
+  transition: transform 0.1s ease, background 0.15s ease;
+}
+.button:active,
+input[type="submit"]:active {
+  transform: translateY(1px);
+}
+.submit-row {
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+.button.default,
+input[type="submit"].default,
+.submit-row input.default {
+  background: #a07d3e;
+}
+.button.default:hover,
+input[type="submit"].default:hover {
+  background: #856533;
+}
+
+/* ---------- CHANGELIST TABLES ---------- */
+#changelist table thead th {
+  background: #f5efe3;
+  color: #5a4a2e;
+  font-weight: 700;
+}
+#changelist-filter h2 {
+  background: linear-gradient(100deg, #a07d3e, #c9a063);
+  color: #fff;
+  border-radius: 10px 10px 0 0;
+}
+.object-tools a {
+  border-radius: 30px;
+  background: #a07d3e;
+}
+.object-tools a:hover {
+  background: #856533;
+}
+
+/* ---------- INLINE GROUPS (events, gallery, etc.) ---------- */
+.inline-group {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+  margin-bottom: 22px;
+}
+.inline-related h3 {
+  background: #f3ede1;
+  color: #5a4a2e;
+  font-weight: 600;
+  border-radius: 0;
+}
+.add-row a {
+  font-weight: 600;
+}
+
+/* ---------- MESSAGES ---------- */
+ul.messagelist li {
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ---------- LOGIN PAGE ---------- */
+body.login #container {
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+}
+body.login #header {
+  border-radius: 0;
+}
+body.login .form-row {
+  border: none;
+  padding: 10px 0;
+}
+body.login .submit-row {
+  box-shadow: none;
+}
+
+/* responsive: stack label above input nicely on small screens */
+@media (max-width: 767px) {
+  .vTextField,
+  input[type="text"],
+  input[type="url"],
+  input[type="email"],
+  textarea {
+    width: 100%;
+  }
+}
+
+/* ---------- DARK MODE SUPPORT ---------- */
+html[data-theme="dark"] input[type="text"],
+html[data-theme="dark"] input[type="password"],
+html[data-theme="dark"] input[type="email"],
+html[data-theme="dark"] input[type="url"],
+html[data-theme="dark"] input[type="number"],
+html[data-theme="dark"] input[type="date"],
+html[data-theme="dark"] input[type="time"],
+html[data-theme="dark"] textarea,
+html[data-theme="dark"] select,
+html[data-theme="dark"] .vTextField {
+  background-color: #26232c !important;
+  color: #ece6da !important;
+  border-color: #4a4654 !important;
+}
+html[data-theme="dark"] #changelist table thead th {
+  background: #2a2530;
+  color: #e9c98a;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) input[type="text"],
+  html:not([data-theme="light"]) input[type="password"],
+  html:not([data-theme="light"]) input[type="email"],
+  html:not([data-theme="light"]) input[type="url"],
+  html:not([data-theme="light"]) input[type="number"],
+  html:not([data-theme="light"]) input[type="date"],
+  html:not([data-theme="light"]) input[type="time"],
+  html:not([data-theme="light"]) textarea,
+  html:not([data-theme="light"]) select,
+  html:not([data-theme="light"]) .vTextField {
+    background-color: #26232c !important;
+    color: #ece6da !important;
+    border-color: #4a4654 !important;
+  }
+}

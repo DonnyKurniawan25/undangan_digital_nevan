@@ -2,13 +2,79 @@
    AUTH, DASHBOARD & EDITOR STYLES
    ============================================================ */
 :root {
-  --d-accent: #c9a063;
-  --d-accent-dark: #a07d3e;
-  --d-bg: #f4f6f9;
-  --d-text: #2f3640;
-  --d-muted: #8a93a0;
-  --d-border: #e3e7ec;
+  --d-accent: #2563eb;
+  --d-accent-dark: #1d4ed8;
+  --d-bg: #eef2f8;
+  --d-text: #1e293b;
+  --d-muted: #64748b;
+  --d-border: #cbd5e1;
   --d-card: #ffffff;
+}
+
+/* Make the shared .field/.btn-primary styles (which rely on template
+   variables) render correctly and in the blue theme inside the dashboard
+   and auth pages. */
+.dash,
+.auth-page {
+  --accent: #2563eb;
+  --accent-dark: #1d4ed8;
+  --border: #cbd5e1;
+  --text: #1e293b;
+  --muted: #64748b;
+  --card-bg: #ffffff;
+  --input-bg: #ffffff;
+  --font-display: "Playfair Display", serif;
+}
+
+/* ---------- FORM INPUTS (clearly visible) ---------- */
+.dash .field input,
+.dash .field select,
+.dash .field textarea,
+.auth-card .field input,
+.auth-card .field select,
+.auth-card .field textarea,
+.dash .photo-field input {
+  width: 100%;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.72rem 0.95rem;
+  font-size: 0.93rem;
+  font-family: "Montserrat", sans-serif;
+  background: #ffffff;
+  color: #1e293b;
+  box-shadow: inset 0 1px 2px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+.dash .field input::placeholder,
+.dash .field textarea::placeholder,
+.auth-card .field input::placeholder {
+  color: #9aa6b6;
+}
+.dash .field input:hover,
+.dash .field select:hover,
+.dash .field textarea:hover,
+.auth-card .field input:hover {
+  border-color: #94a3b8;
+}
+.dash .field input:focus,
+.dash .field select:focus,
+.dash .field textarea:focus,
+.auth-card .field input:focus,
+.auth-card .field select:focus,
+.auth-card .field textarea:focus,
+.dash .photo-field input:focus {
+  border-color: #2563eb;
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  outline: none;
+}
+.dash .field span,
+.auth-card .field span {
+  color: #475569;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.2px;
+  font-size: 0.82rem;
 }
 
 /* ---------- HOME NAV ---------- */
@@ -72,7 +138,7 @@
   align-items: center;
   justify-content: center;
   padding: 2rem 1.2rem;
-  background: linear-gradient(135deg, #2a241a 0%, #5a4a2e 100%);
+  background: linear-gradient(135deg, #0f2350 0%, #1d4ed8 60%, #3b82f6 100%);
   font-family: "Montserrat", sans-serif;
 }
 .auth-card {
@@ -128,8 +194,8 @@
 }
 .dash-sidebar {
   width: 250px;
-  background: #2a241a;
-  color: #e6ddcb;
+  background: linear-gradient(180deg, #0f2350 0%, #15306b 100%);
+  color: #cdd9ef;
   display: flex;
   flex-direction: column;
   padding: 1.6rem 1rem;
@@ -140,7 +206,7 @@
 .dash-brand {
   font-family: "Playfair Display", serif;
   font-size: 1.4rem;
-  color: #f0d9a8;
+  color: #ffffff;
   padding: 0 0.6rem 1.4rem;
 }
 .dash-nav {
@@ -152,15 +218,16 @@
 .dash-nav a {
   padding: 0.75rem 0.9rem;
   border-radius: 10px;
-  color: #d8cfbb;
+  color: #b9c8e6;
   font-size: 0.92rem;
   transition: background 0.2s, color 0.2s;
 }
 .dash-nav a:hover {
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
 }
 .dash-nav a.active {
-  background: var(--d-accent);
+  background: #2563eb;
   color: #fff;
 }
 .dash-user {
@@ -170,14 +237,14 @@
 .dash-user-name {
   font-size: 0.9rem;
   padding: 0 0.6rem 0.6rem;
-  color: #f0d9a8;
+  color: #ffffff;
 }
 .dash-logout {
   width: 100%;
   padding: 0.6rem;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #e6ddcb;
+  background: rgba(255, 255, 255, 0.1);
+  color: #dce6f7;
   font-size: 0.85rem;
   transition: background 0.2s;
 }
@@ -222,8 +289,8 @@
 }
 .dash-cta {
   margin-top: 2rem;
-  background: #fff8ec;
-  border: 1px solid #f0e2c4;
+  background: #eaf1fe;
+  border: 1px solid #c7dbfb;
   border-radius: 14px;
   padding: 1.2rem 1.5rem;
   display: flex;
@@ -268,7 +335,7 @@
   background: #3c9d6e;
 }
 .inv-status.draft {
-  background: #b08a4a;
+  background: #d97706;
 }
 .inv-card-body {
   padding: 1.1rem 1.2rem 1.3rem;
@@ -307,8 +374,8 @@
 }
 .inv-locked {
   font-size: 0.82rem;
-  color: #b08a4a;
-  background: #fdf6e8;
+  color: #b45309;
+  background: #fef3e2;
   padding: 0.5rem 0.7rem;
   border-radius: 8px;
   margin-bottom: 0.9rem;
@@ -344,16 +411,29 @@
 }
 .editor-section {
   background: #fff;
+  border: 1px solid #e7edf5;
   border-radius: 16px;
   padding: 1.5rem 1.6rem;
   margin-bottom: 1.3rem;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
 }
 .editor-section h2 {
   font-family: "Playfair Display", serif;
-  font-size: 1.25rem;
-  margin-bottom: 1rem;
-  color: var(--d-accent-dark);
+  font-size: 1.2rem;
+  margin-bottom: 1.1rem;
+  padding-bottom: 0.7rem;
+  border-bottom: 2px solid #eef2f8;
+  color: #1e3a8a;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.editor-section h2::before {
+  content: "";
+  width: 4px;
+  height: 18px;
+  background: #2563eb;
+  border-radius: 3px;
 }
 .editor-section-head {
   display: flex;
@@ -363,6 +443,8 @@
 }
 .editor-section-head h2 {
   margin-bottom: 0;
+  padding-bottom: 0;
+  border-bottom: none;
 }
 .grid-2 {
   display: grid;
@@ -415,6 +497,33 @@
   padding: 1rem 0;
 }
 
+/* ---------- SECTION TOGGLES ---------- */
+.toggle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.6rem;
+}
+.toggle-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--d-border);
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  background: #fbfcfd;
+  transition: border-color 0.2s, background 0.2s;
+}
+.toggle-item:has(input:checked) {
+  border-color: var(--d-accent);
+  background: #eff5ff;
+}
+.toggle-item input {
+  width: 17px;
+  height: 17px;
+}
+
 /* ---------- DROPZONE & PHOTO GRID ---------- */
 .dropzone {
   border: 2px dashed #c4cdd8;
@@ -432,7 +541,7 @@
 }
 .dropzone:hover {
   border-color: var(--d-accent);
-  background: #fffdf8;
+  background: #eff5ff;
 }
 .dropzone.uploading {
   opacity: 0.7;
@@ -677,7 +786,7 @@
 }
 .pay-method:hover {
   border-color: var(--d-accent);
-  background: #fffdf8;
+  background: #eff5ff;
 }
 .success-box {
   text-align: center;
@@ -744,8 +853,8 @@
   color: #2e8b5d;
 }
 .order-status.pending {
-  background: #fdf3e3;
-  color: #b08a4a;
+  background: #fef3e2;
+  color: #b45309;
 }
 .order-status.cancelled {
   background: #fdeceb;

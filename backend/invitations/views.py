@@ -46,7 +46,9 @@ class InvitationViewSet(viewsets.ReadOnlyModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
-        if not instance.is_published:
+        preview = request.query_params.get("preview")
+        is_preview = preview and str(instance.preview_token) == str(preview)
+        if not instance.is_published and not is_preview:
             return Response(
                 {
                     "detail": "Undangan ini belum dipublikasikan.",

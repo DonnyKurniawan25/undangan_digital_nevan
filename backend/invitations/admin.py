@@ -20,6 +20,10 @@ from .models import (
     Order,
 )
 
+admin.site.site_header = "Undangan Digital — Panel Admin"
+admin.site.site_title = "Undangan Digital Admin"
+admin.site.index_title = "Selamat datang di Panel Admin"
+
 
 def copy_field(value, label="Salin"):
     """Render a read-only input with a one-click copy button for the admin."""
@@ -73,17 +77,42 @@ class InvitationAdmin(admin.ModelAdmin):
     list_editable = ("is_published",)
     search_fields = ("groom_name", "bride_name", "slug", "owner__username")
     prepopulated_fields = {"slug": ("groom_name", "bride_name")}
-    readonly_fields = ("invitation_link", "created_at", "updated_at")
+    readonly_fields = ("invitation_link", "preview_panel", "created_at", "updated_at")
     inlines = [EventInline, LoveStoryInline, GalleryInline, BankAccountInline]
 
     fieldsets = (
-        ("Link Undangan", {"fields": ("invitation_link",)}),
         (
-            "Pengaturan",
+            "🔗 LINK & PREVIEW",
+            {
+                "fields": ("invitation_link", "preview_panel"),
+                "description": "Bagikan link undangan atau lihat pratinjau langsung di bawah ini.",
+            },
+        ),
+        (
+            "⚙️ PENGATURAN UMUM",
             {"fields": ("owner", "slug", "template", "main_date", "is_published")},
         ),
         (
-            "Mempelai Pria",
+            "👁️ TAMPILAN SECTION (aktif/nonaktif)",
+            {
+                "fields": (
+                    "show_quote",
+                    "show_couple",
+                    "show_countdown",
+                    "show_love_story",
+                    "show_events",
+                    "show_gallery",
+                    "show_gift",
+                    "show_info",
+                    "show_rsvp",
+                    "show_guestbook",
+                ),
+                "description": "Hilangkan centang untuk menyembunyikan section dari undangan.",
+                "classes": ("collapse",),
+            },
+        ),
+        (
+            "🤵 MEMPELAI PRIA",
             {
                 "fields": (
                     "groom_name",
@@ -97,7 +126,7 @@ class InvitationAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Mempelai Wanita",
+            "👰 MEMPELAI WANITA",
             {
                 "fields": (
                     "bride_name",
@@ -111,7 +140,7 @@ class InvitationAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Konten",
+            "📝 KONTEN UTAMA",
             {
                 "fields": (
                     "cover_photo",
@@ -124,7 +153,7 @@ class InvitationAdmin(admin.ModelAdmin):
             },
         ),
         (
-            "Info Tambahan (Premium)",
+            "✨ INFO TAMBAHAN (PREMIUM)",
             {
                 "fields": (
                     "wedding_hashtag",
@@ -135,7 +164,7 @@ class InvitationAdmin(admin.ModelAdmin):
                 )
             },
         ),
-        ("Info", {"fields": ("created_at", "updated_at")}),
+        ("ℹ️ INFO SISTEM", {"fields": ("created_at", "updated_at")}),
     )
 
     def _public_url(self, obj):
@@ -168,6 +197,31 @@ class InvitationAdmin(admin.ModelAdmin):
             return "-"
         url = self._public_url(obj)
         return format_html("<a href='{0}' target='_blank'>{0}</a>", url)
+
+    @admin.display(description="Pratinjau Undangan (Live)")
+    def preview_panel(self, obj):
+        if not obj.pk or not obj.slug:
+            return "Simpan undangan terlebih dahulu untuk melihat pratinjau."
+        base = getattr(settings, "FRONTEND_BASE_URL", "").rstrip("/")
+        url = f"{base}/undangan/{obj.slug}?preview={obj.preview_token}"
+        return format_html(
+            "<div style='max-width:420px'>"
+            "<p style='margin:0 0 8px;color:#555'>Pratinjau di bawah dapat dilihat "
+            "<strong>meski belum dipublikasikan</strong>. Klik <em>Save</em> dulu "
+            "untuk melihat perubahan terbaru, lalu muat ulang pratinjau.</p>"
+            "<div style='display:flex;gap:8px;margin-bottom:10px'>"
+            "<a href='{0}' target='_blank' class='button'>Buka di Tab Baru &#8599;</a>"
+            "<button type='button' class='button' "
+            "onclick=\"var f=document.getElementById('inv-preview');f.src=f.src;\">"
+            "&#8635; Muat Ulang</button>"
+            "</div>"
+            "<div style='border:10px solid #1b1b1b;border-radius:28px;width:340px;"
+            "height:640px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.25)'>"
+            "<iframe id='inv-preview' src='{0}' "
+            "style='width:100%;height:100%;border:0;background:#fff'></iframe>"
+            "</div></div>",
+            url,
+        )
 
 
 @admin.register(Photo)

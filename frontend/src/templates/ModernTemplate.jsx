@@ -42,6 +42,8 @@ export default function ModernTemplate({
     window.scrollTo({ top: 0 });
   };
 
+  const show = (key) => data[key] !== false;
+
   return (
     <div className="tpl-modern">
       <AudioPlayer src={data.music_url} playing={music} onToggle={setMusic} />
@@ -78,7 +80,7 @@ export default function ModernTemplate({
           <section className="md-section md-opening">
             <div className="md-opening-inner reveal">
               <p className="md-opening-text">{data.opening_text}</p>
-              {data.quote && (
+              {show("show_quote") && data.quote && (
                 <blockquote className="md-quote">
                   “{data.quote}”
                   {data.quote_source && <cite>{data.quote_source}</cite>}
@@ -88,6 +90,7 @@ export default function ModernTemplate({
           </section>
 
           {/* COUPLE */}
+          {show("show_couple") && (
           <section className="md-section md-couple">
             <SectionTitle label="01 — Couple" title="The Happy Couple" />
             <div className="md-couple-grid">
@@ -139,17 +142,20 @@ export default function ModernTemplate({
               </div>
             </div>
           </section>
+          )}
 
           {/* COUNTDOWN */}
+          {show("show_countdown") && (
           <section className="md-section md-countdown-sec">
             <SectionTitle label="02 — Save The Date" title={formatFullDate(data.main_date)} />
             <div className="reveal">
               <Countdown target={data.main_date} />
             </div>
           </section>
+          )}
 
           {/* LOVE STORY */}
-          {data.love_story && data.love_story.length > 0 && (
+          {show("show_love_story") && data.love_story && data.love_story.length > 0 && (
             <section className="md-section md-story">
               <SectionTitle label="03 — Story" title="How We Met" />
               <div className="md-story-grid">
@@ -168,6 +174,7 @@ export default function ModernTemplate({
           )}
 
           {/* EVENTS */}
+          {show("show_events") && (
           <section className="md-section md-events">
             <SectionTitle label="04 — When & Where" title="The Events" />
             <div className="md-events-grid">
@@ -201,9 +208,10 @@ export default function ModernTemplate({
               ))}
             </div>
           </section>
+          )}
 
           {/* GALLERY */}
-          {data.gallery && data.gallery.length > 0 && (
+          {show("show_gallery") && data.gallery && data.gallery.length > 0 && (
             <section className="md-section md-gallery">
               <SectionTitle label="05 — Moments" title="Gallery" />
               <div className="md-gallery-grid reveal">
@@ -217,8 +225,9 @@ export default function ModernTemplate({
           )}
 
           {/* GIFT */}
-          {((data.bank_accounts && data.bank_accounts.length > 0) ||
-            data.gift_address) && (
+          {show("show_gift") &&
+            ((data.bank_accounts && data.bank_accounts.length > 0) ||
+              data.gift_address) && (
             <section className="md-section md-gift">
               <SectionTitle label="06 — Gift" title="Wedding Gift" />
               <p className="md-gift-text reveal">
@@ -235,7 +244,8 @@ export default function ModernTemplate({
           )}
 
           {/* EXTRA INFO */}
-          {(data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
+          {show("show_info") &&
+            (data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
             <section className="md-section md-info">
               <SectionTitle label="07 — Info" title="Good To Know" />
               <div className="reveal">
@@ -245,6 +255,7 @@ export default function ModernTemplate({
           )}
 
           {/* RSVP */}
+          {show("show_rsvp") && (
           <section className="md-section md-rsvp">
             <SectionTitle label="08 — RSVP" title="Konfirmasi Kehadiran" />
             <div className="reveal">
@@ -255,14 +266,17 @@ export default function ModernTemplate({
               />
             </div>
           </section>
+          )}
 
           {/* GUESTBOOK */}
+          {show("show_guestbook") && (
           <section className="md-section md-guestbook">
             <SectionTitle label="09 — Wishes" title="Ucapan & Doa" />
             <div className="reveal">
               <Guestbook slug={data.slug} wishes={wishes} onAdded={onWishAdded} />
             </div>
           </section>
+          )}
 
           {/* CLOSING */}
           <section className="md-closing">

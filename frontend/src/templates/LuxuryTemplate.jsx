@@ -43,6 +43,8 @@ export default function LuxuryTemplate({
     window.scrollTo({ top: 0 });
   };
 
+  const show = (key) => data[key] !== false;
+
   return (
     <div className="tpl-luxury">
       <AudioPlayer src={data.music_url} playing={music} onToggle={setMusic} />
@@ -87,7 +89,7 @@ export default function LuxuryTemplate({
                 {data.bride_name[0]}
               </div>
               <p className="lx-opening-text">{data.opening_text}</p>
-              {data.quote && (
+              {show("show_quote") && data.quote && (
                 <blockquote className="lx-quote">
                   “{data.quote}”
                   {data.quote_source && <cite>— {data.quote_source}</cite>}
@@ -97,6 +99,7 @@ export default function LuxuryTemplate({
           </section>
 
           {/* COUPLE */}
+          {show("show_couple") && (
           <section className="lx-section lx-couple">
             <SectionTitle index="I" title="The Couple" />
             <div className="lx-couple-grid">
@@ -145,8 +148,10 @@ export default function LuxuryTemplate({
               </div>
             </div>
           </section>
+          )}
 
           {/* COUNTDOWN */}
+          {show("show_countdown") && (
           <section
             className="lx-section lx-countdown-sec"
             style={{ backgroundImage: `url(${data.cover_photo})` }}
@@ -158,9 +163,10 @@ export default function LuxuryTemplate({
               <Countdown target={data.main_date} />
             </div>
           </section>
+          )}
 
           {/* LOVE STORY */}
-          {data.love_story && data.love_story.length > 0 && (
+          {show("show_love_story") && data.love_story && data.love_story.length > 0 && (
             <section className="lx-section lx-story">
               <SectionTitle index="II" title="Our Story" />
               <div className="lx-timeline">
@@ -176,6 +182,7 @@ export default function LuxuryTemplate({
           )}
 
           {/* EVENTS */}
+          {show("show_events") && (
           <section className="lx-section lx-events">
             <SectionTitle index="III" title="The Events" />
             <div className="lx-events-grid">
@@ -203,9 +210,10 @@ export default function LuxuryTemplate({
               ))}
             </div>
           </section>
+          )}
 
           {/* GALLERY */}
-          {data.gallery && data.gallery.length > 0 && (
+          {show("show_gallery") && data.gallery && data.gallery.length > 0 && (
             <section className="lx-section lx-gallery">
               <SectionTitle index="IV" title="Gallery" />
               <div className="lx-gallery-grid reveal">
@@ -219,8 +227,9 @@ export default function LuxuryTemplate({
           )}
 
           {/* GIFT */}
-          {((data.bank_accounts && data.bank_accounts.length > 0) ||
-            data.gift_address) && (
+          {show("show_gift") &&
+            ((data.bank_accounts && data.bank_accounts.length > 0) ||
+              data.gift_address) && (
             <section className="lx-section lx-gift">
               <SectionTitle index="V" title="Wedding Gift" />
               <p className="lx-gift-text reveal">
@@ -237,7 +246,8 @@ export default function LuxuryTemplate({
           )}
 
           {/* EXTRA INFO */}
-          {(data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
+          {show("show_info") &&
+            (data.live_stream_url || data.dresscode || data.wedding_hashtag) && (
             <section className="lx-section lx-info">
               <SectionTitle index="VI" title="Information" />
               <div className="reveal">
@@ -247,6 +257,7 @@ export default function LuxuryTemplate({
           )}
 
           {/* RSVP */}
+          {show("show_rsvp") && (
           <section className="lx-section lx-rsvp">
             <SectionTitle index="VII" title="RSVP" />
             <div className="reveal">
@@ -257,14 +268,17 @@ export default function LuxuryTemplate({
               />
             </div>
           </section>
+          )}
 
           {/* GUESTBOOK */}
+          {show("show_guestbook") && (
           <section className="lx-section lx-guestbook">
             <SectionTitle index="VIII" title="Wishes" />
             <div className="reveal">
               <Guestbook slug={data.slug} wishes={wishes} onAdded={onWishAdded} />
             </div>
           </section>
+          )}
 
           {/* CLOSING */}
           <section
