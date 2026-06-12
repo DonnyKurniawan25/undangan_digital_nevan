@@ -1006,6 +1006,36 @@
 .btn-secondary:hover {
   background: #f5f5f5;
 }
+.order-actions {
+  display: flex;
+  gap: 0.4rem;
+}
+.btn-small {
+  padding: 0.35rem 0.8rem;
+  font-size: 0.82rem;
+  border-radius: 7px;
+  border: none;
+  cursor: pointer;
+}
+.btn-pay {
+  background: #25d366;
+  color: #fff;
+}
+.btn-pay:hover {
+  background: #1da851;
+}
+.btn-cancel {
+  background: #fff;
+  color: #d33;
+  border: 1px solid #f0bcbc;
+}
+.btn-cancel:hover {
+  background: #fff0f0;
+}
+.btn-cancel:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 @media (max-width: 640px) {
   .qris-pay {
     grid-template-columns: 1fr;

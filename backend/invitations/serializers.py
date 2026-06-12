@@ -349,6 +349,7 @@ class OrderSerializer(serializers.ModelSerializer):
     invitations_detail = OrderInvitationSerializer(
         source="invitations", many=True, read_only=True
     )
+    invitation_ids = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
@@ -362,5 +363,8 @@ class OrderSerializer(serializers.ModelSerializer):
             "created_at",
             "paid_at",
             "invitations_detail",
+            "invitation_ids",
         ]
-        read_only_fields = fields
+
+    def get_invitation_ids(self, obj):
+        return sorted(i.id for i in obj.invitations.all())

@@ -232,7 +232,9 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
 
     @action(detail=False, methods=["post"])
     def checkout(self, request):
-        """Create a pending order for the chosen invitations."""
+        """Create a pending order for the chosen invitations.
+        If a pending order already exists for the exact same set of
+        invitations, reuse it instead of creating a duplicate."""
         ids = request.data.get("invitation_ids", [])
         invitations = list(
             Invitation.objects.filter(
@@ -244,6 +246,18 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
                 {"detail": "Pilih minimal satu undangan yang belum dipublikasikan."},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+        inv_id_set = {inv.id for inv in invitations}
+
+        # Reuse an existing pending order covering exactly the same invitations.
+        for existing in (
+            Order.objects.filter(user=request.user, status="pending")
+            .prefetch_related("invitations")
+        ):
+            if {i.id for i in existing.invitations.all()} == inv_id_set:
+                return Response(
+                    OrderSerializer(existing).data, status=status.HTTP_200_OK
+                )
+
         count = len(invitations)
         amount = price_for_count(count)
         order = Order.objects.create(
@@ -251,6 +265,19 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
         )
         order.invitations.set(invitations)
         return Response(OrderSerializer(order).data, status=status.HTTP_201_CREATED)
+
+    @action(detail=True, methods=["post"])
+    def cancel(self, request, pk=None):
+        """Cancel a pending order."""
+        order = self.get_object()
+        if order.status == "paid":
+            return Response(
+                {"detail": "Pesanan yang sudah dibayar tidak bisa dibatalkan."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        order.status = "cancelled"
+        order.save(update_fields=["status"])
+        return Response(OrderSerializer(order).data)
 
     @action(detail=True, methods=["post"])
     def pay(self, request, pk=None):

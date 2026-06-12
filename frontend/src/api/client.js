@@ -131,4 +131,6 @@ export const api = {
       method: "POST",
       body: JSON.stringify({ payment_method: method }),
     }),
+  cancelOrder: (id) =>
+    request(`/my/orders/${id}/cancel/`, { method: "POST" }),
 };
