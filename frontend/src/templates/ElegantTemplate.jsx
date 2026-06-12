@@ -294,6 +294,16 @@ export default function ElegantTemplate({
 
           <footer className="el-footer">
             <p>Dibuat dengan ♥ — Undangan Digital</p>
+            <p>
+              Create by{" "}
+              <a
+                href="https://wa.me/6281917190895"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                balesourcecode
+              </a>
+            </p>
           </footer>
         </div>
       )}

@@ -438,6 +438,11 @@
   font-size: 0.78rem;
   letter-spacing: 1px;
 }
+.fl-footer a {
+  color: #e0c98a;
+  font-weight: 700;
+  text-decoration: underline;
+}
 
 @media (min-width: 521px) {
   .fl-gallery-grid {

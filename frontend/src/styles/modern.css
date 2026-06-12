@@ -381,6 +381,11 @@
   font-size: 0.76rem;
   letter-spacing: 1px;
 }
+.md-footer a {
+  color: var(--accent);
+  font-weight: 700;
+  text-decoration: underline;
+}
 
 @media (min-width: 521px) {
   .md-gallery-grid {

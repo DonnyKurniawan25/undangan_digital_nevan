@@ -547,6 +547,11 @@
   font-size: 0.78rem;
   letter-spacing: 1px;
 }
+.el-footer a {
+  color: #d4af6a;
+  font-weight: 700;
+  text-decoration: underline;
+}
 
 @media (min-width: 521px) {
   .el-gallery-grid {
