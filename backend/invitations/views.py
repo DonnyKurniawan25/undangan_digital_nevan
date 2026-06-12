@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.models import Token
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
-from .models import Invitation, RSVP, Wish, Photo, PricingTier, Order
+from .models import Invitation, RSVP, Wish, Photo, AudioTrack, PricingTier, Order
 from .serializers import (
     InvitationListSerializer,
     InvitationDetailSerializer,
@@ -18,6 +18,7 @@ from .serializers import (
     RegisterSerializer,
     UserSerializer,
     PhotoSerializer,
+    AudioTrackSerializer,
     PricingTierSerializer,
     OrderSerializer,
 )
@@ -165,6 +166,19 @@ class MyPhotoViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return Photo.objects.filter(owner=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
+
+
+class MyAudioViewSet(viewsets.ModelViewSet):
+    serializer_class = AudioTrackSerializer
+    permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    http_method_names = ["get", "post", "delete"]
+
+    def get_queryset(self):
+        return AudioTrack.objects.filter(owner=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)

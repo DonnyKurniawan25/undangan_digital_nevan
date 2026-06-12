@@ -108,6 +108,11 @@ export const api = {
   uploadPhoto: (formData) => upload("/my/photos/", formData),
   deletePhoto: (id) => request(`/my/photos/${id}/`, { method: "DELETE" }),
 
+  // my audio (music)
+  myAudio: () => request("/my/audio/"),
+  uploadAudio: (formData) => upload("/my/audio/", formData),
+  deleteAudio: (id) => request(`/my/audio/${id}/`, { method: "DELETE" }),
+
   // orders
   myOrders: () => request("/my/orders/"),
   quoteOrder: (ids) =>

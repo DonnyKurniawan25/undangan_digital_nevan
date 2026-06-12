@@ -16,6 +16,7 @@ from .models import (
     RSVP,
     Wish,
     Photo,
+    AudioTrack,
     PricingTier,
     Order,
 )
@@ -308,6 +309,42 @@ class PhotoAdmin(admin.ModelAdmin):
     @admin.display(description="Link")
     def copy_url(self, obj):
         if not obj.image:
+            return "-"
+        return copy_field(self._abs_url(obj), label="Salin")
+
+
+@admin.register(AudioTrack)
+class AudioTrackAdmin(admin.ModelAdmin):
+    list_display = ("title", "owner", "uploaded_at", "copy_url")
+    list_filter = ("owner",)
+    readonly_fields = ("player", "audio_url")
+    search_fields = ("title",)
+    fields = ("title", "audio", "player", "audio_url")
+
+    def _abs_url(self, obj):
+        if not obj.audio:
+            return ""
+        base = getattr(settings, "BACKEND_BASE_URL", "").rstrip("/")
+        return f"{base}{obj.audio.url}"
+
+    @admin.display(description="Pemutar")
+    def player(self, obj):
+        if not obj.audio:
+            return "Unggah file lalu simpan untuk memutar."
+        return format_html(
+            "<audio controls src='{0}' style='max-width:100%'></audio>",
+            self._abs_url(obj),
+        )
+
+    @admin.display(description="Link Musik (salin & tempel ke field Musik undangan)")
+    def audio_url(self, obj):
+        if not obj.audio:
+            return "Unggah file lalu simpan untuk mendapatkan link."
+        return copy_field(self._abs_url(obj), label="Salin Link")
+
+    @admin.display(description="Link")
+    def copy_url(self, obj):
+        if not obj.audio:
             return "-"
         return copy_field(self._abs_url(obj), label="Salin")
 

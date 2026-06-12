@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.contrib.auth.models import User
@@ -281,6 +282,56 @@ def delete_old_photo_on_change(sender, instance, **kwargs):
         return
     old_file = old.image
     if old_file and old_file != instance.image:
+        old_file.delete(save=False)
+
+
+class AudioTrack(models.Model):
+    """Media library for music. Upload an MP3 here, then copy its public URL
+    and paste it into the invitation's music_url field (or pick via the editor)."""
+
+    title = models.CharField(
+        max_length=200, blank=True, help_text="Nama/judul lagu (opsional)"
+    )
+    audio = models.FileField(
+        upload_to="music/",
+        validators=[FileExtensionValidator(allowed_extensions=["mp3", "m4a", "ogg", "wav"])],
+    )
+    owner = models.ForeignKey(
+        User,
+        related_name="audio_tracks",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-uploaded_at"]
+        verbose_name = "Musik"
+        verbose_name_plural = "Galeri Upload Musik"
+
+    def __str__(self):
+        return self.title or f"Musik #{self.pk}"
+
+
+@receiver(post_delete, sender=AudioTrack)
+def delete_audio_file_on_delete(sender, instance, **kwargs):
+    """Remove the physical file from /media when an AudioTrack is deleted."""
+    if instance.audio:
+        instance.audio.delete(save=False)
+
+
+@receiver(pre_save, sender=AudioTrack)
+def delete_old_audio_on_change(sender, instance, **kwargs):
+    """If the file of an existing AudioTrack is replaced, delete the old file."""
+    if not instance.pk:
+        return
+    try:
+        old = AudioTrack.objects.get(pk=instance.pk)
+    except AudioTrack.DoesNotExist:
+        return
+    old_file = old.audio
+    if old_file and old_file != instance.audio:
         old_file.delete(save=False)
 
 

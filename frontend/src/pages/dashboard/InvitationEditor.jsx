@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { api } from "../../api/client.js";
 import DashboardLayout from "../../components/DashboardLayout.jsx";
@@ -66,6 +66,63 @@ function PhotoField({ label, value, onChange }) {
       </div>
       {value ? <img className="photo-field-preview" src={value} alt="" /> : null}
       <PhotoPicker open={picker} onClose={() => setPicker(false)} onSelect={onChange} />
+    </label>
+  );
+}
+
+// Field that supports typing a music URL or uploading an MP3 directly.
+function MusicField({ value, onChange }) {
+  const [uploading, setUploading] = useState(false);
+  const [err, setErr] = useState("");
+  const inputRef = useRef(null);
+
+  const handleFile = async (file) => {
+    if (!file) return;
+    setErr("");
+    setUploading(true);
+    try {
+      const fd = new FormData();
+      fd.append("title", file.name.replace(/\.[^.]+$/, ""));
+      fd.append("audio", file);
+      const track = await api.uploadAudio(fd);
+      onChange(track.url);
+    } catch (e) {
+      setErr(e.message || "Gagal mengunggah musik.");
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  };
+
+  return (
+    <label className="field">
+      <span>Musik (URL mp3 atau unggah file)</span>
+      <div className="photo-field">
+        <input
+          value={value || ""}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="https://...mp3 atau unggah file di sebelah"
+        />
+        <button
+          type="button"
+          className="pick-btn"
+          onClick={() => inputRef.current?.click()}
+          disabled={uploading}
+        >
+          {uploading ? "Mengunggah..." : "Unggah MP3"}
+        </button>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="audio/mpeg,audio/mp3,audio/*,.mp3,.m4a,.ogg,.wav"
+          hidden
+          onChange={(e) => handleFile(e.target.files?.[0])}
+        />
+      </div>
+      {err ? <span className="field-error">{err}</span> : null}
+      {value ? (
+        <audio controls src={value} style={{ width: "100%", marginTop: "0.5rem" }} />
+      ) : null}
     </label>
   );
 }
@@ -156,10 +213,7 @@ export default function InvitationEditor() {
             </label>
           </div>
           <PhotoField label="Foto Cover" value={form.cover_photo} onChange={set("cover_photo")} />
-          <label className="field">
-            <span>Musik (URL mp3)</span>
-            <input value={form.music_url} onChange={setInput("music_url")} placeholder="https://...mp3" />
-          </label>
+          <MusicField value={form.music_url} onChange={set("music_url")} />
         </section>
 
         <section className="editor-section">

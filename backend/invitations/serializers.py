@@ -11,6 +11,7 @@ from .models import (
     RSVP,
     Wish,
     Photo,
+    AudioTrack,
     PricingTier,
     Order,
 )
@@ -196,6 +197,24 @@ class PhotoSerializer(serializers.ModelSerializer):
         if request:
             return request.build_absolute_uri(obj.image.url)
         return obj.image.url
+
+
+class AudioTrackSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = AudioTrack
+        fields = ["id", "title", "audio", "url", "uploaded_at"]
+        read_only_fields = ["id", "url", "uploaded_at"]
+        extra_kwargs = {"audio": {"write_only": True}}
+
+    def get_url(self, obj):
+        if not obj.audio:
+            return ""
+        request = self.context.get("request")
+        if request:
+            return request.build_absolute_uri(obj.audio.url)
+        return obj.audio.url
 
 
 # ============================================================

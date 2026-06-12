@@ -5,6 +5,7 @@ from .views import (
     InvitationViewSet,
     MyInvitationViewSet,
     MyPhotoViewSet,
+    MyAudioViewSet,
     OrderViewSet,
     RSVPCreateView,
     WishCreateView,
@@ -19,6 +20,7 @@ router = DefaultRouter()
 router.register(r"invitations", InvitationViewSet, basename="invitation")
 router.register(r"my/invitations", MyInvitationViewSet, basename="my-invitation")
 router.register(r"my/photos", MyPhotoViewSet, basename="my-photo")
+router.register(r"my/audio", MyAudioViewSet, basename="my-audio")
 router.register(r"my/orders", OrderViewSet, basename="my-order")
 
 urlpatterns = [
